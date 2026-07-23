@@ -1,0 +1,54 @@
+\documentclass[9pt, letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage[top=0.22in, bottom=0.22in, left=0.45in, right=0.45in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[final, tracking=true, kerning=true, spacing=true]{microtype}
+
+\hypersetup{colorlinks=true, urlcolor={blue!70!black}}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{0.95}
+\raggedright
+\pdfgentounicode=1
+
+\titleformat{\section}{\large\itshape}{}{0pt}{}[\vspace{-6pt}\rule{\textwidth}{0.4pt}]
+\titlespacing*{\section}{0pt}{3pt}{1pt}
+\setlist[itemize]{nosep, left=10pt, label=\textbullet, topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=0pt}
+
+\newcommand{\resumeItem}[1]{\item #1}
+\newcommand{\resumeSubheading}[4]{\textbf{#1} \hfill #2\\\textit{#3} \hfill #4}
+\newcommand{\resumeProjectHeading}[2]{\textbf{#1} \hfill #2}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
+
+\begin{document}
+
+{{NAME}}\\
+{{CONTACT_LINE}} \textbar{} \href{mailto:{{EMAIL_URL}}}{{{EMAIL_DISPLAY}}} \textbar{} \href{{{LINKEDIN_URL}}}{{{LINKEDIN_DISPLAY}}} \textbar{} \href{{{PORTFOLIO_URL}}}{{{PORTFOLIO_DISPLAY}}}
+
+\section*{Profile}
+{{PROFILE}}
+
+\section*{Skills}
+{{SKILL_COLUMNS}}
+
+\section*{Professional Experience}
+{{EXPERIENCE}}
+
+\section*{Projects}
+{{PROJECTS}}
+
+\section*{Leadership}
+{{LEADERSHIP}}
+
+\section*{Education}
+{{EDUCATION}}
+
+\end{document}

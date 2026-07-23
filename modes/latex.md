@@ -10,12 +10,12 @@ Export a tailored, ATS-optimized CV as a `.tex` file and compile it to PDF via `
 4. Extract 15-20 keywords from the JD
 5. Detect JD language → CV language (EN default)
 6. Detect role archetype → adapt framing
-7. Rewrite Professional Summary injecting JD keywords (same rules as `pdf` mode — NEVER invent skills)
-8. Select top 3-4 most relevant projects for the offer
-9. Reorder experience bullets by JD relevance
-10. Inject keywords naturally into existing achievements
+7. Read `modes/_profile.md → CV Preservation Policy` and `config/profile.yml → cv.tailoring_strategy`. When set to `augment` / `preserve_all_content`, retain every CV entry and bullet.
+8. Augment the Professional Summary with JD keywords (same rules as `pdf` mode — NEVER invent skills)
+9. Keep every project and work-experience bullet; reorder for relevance without shortening or omitting the original evidence.
+10. Inject keywords naturally into existing achievements without changing the original metrics, tools, or scope.
 11. Build a JSON payload (see schema below) and write to `/tmp/cv-{candidate}-{company}.json`
-12. Run: `node build-cv-latex.mjs /tmp/cv-{candidate}-{company}.json output/cv-{candidate}-{company}-{YYYY-MM-DD}.tex`
+12. Read `config/profile.yml → cv.latex_template` (default `standard`). Run: `node build-cv-latex.mjs /tmp/cv-{candidate}-{company}.json output/cv-{candidate}-{company}-{YYYY-MM-DD}.tex --template={standard|compact}`
 13. Run: `node generate-latex.mjs output/cv-{candidate}-{company}-{YYYY-MM-DD}.tex output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf`
     *(Replace `{candidate}`, `{company}`, `{YYYY-MM-DD}` with actual values.)*
 14. Report: .tex path, .pdf path, file sizes, section count, keyword coverage %
@@ -24,7 +24,7 @@ Export a tailored, ATS-optimized CV as a `.tex` file and compile it to PDF via `
 
 ## Language support
 
-- **Localized section titles are fine.** The validator counts `\section{}` blocks instead of matching English titles, so a Spanish/French/German CV (e.g. `\section{Educación}`) validates normally.
+- **Localized section titles are fine.** The validator counts both `\section{}` and `\section*{}` blocks instead of matching English titles, so a Spanish/French/German CV (e.g. `\section{Educación}`) validates normally.
 - **CJK (Japanese / Chinese / Korean) is NOT supported on this path yet.** The template is a pdfLaTeX / Computer-Modern setup with no CJK font, so kana/kanji/hangul cannot render. `generate-latex.mjs` detects CJK characters and stops with guidance. For a Japanese CV, use `pdf` mode (HTML → PDF), which renders CJK via a `lang="ja"` font fallback.
 
 ## JSON Input Schema
@@ -38,6 +38,8 @@ Write a JSON file with this structure. `build-cv-latex.mjs` handles template mer
   "email": { "url": "jane@example.com", "display": "jane@example.com" },
   "linkedin": { "url": "https://linkedin.com/in/janesmith", "display": "linkedin.com/in/janesmith" },
   "github": { "url": "https://github.com/janesmith", "display": "github.com/janesmith" },
+  "portfolio": { "url": "https://janesmith.dev", "display": "janesmith.dev" },
+  "profile": "Short role-targeted summary backed by cv.md.",
   "education": [
     {
       "institution": "University Name",
@@ -72,9 +74,16 @@ Write a JSON file with this structure. `build-cv-latex.mjs` handles template mer
   "skills": [
     { "category": "Languages", "items": "Python, JavaScript, C++" },
     { "category": "Frameworks", "items": "FastAPI, React, PyTorch" }
+  ],
+  "leadership": [
+    { "name": "Engineering Society", "context": "Vice President", "bullets": ["Coordinated events and partnerships"] }
   ]
 }
 ```
+
+### Compact Charter template
+
+Set `cv.latex_template: compact` to use the compact Charter layout: a plain-text header, italic section headings with rules, four skills columns, Profile, Professional Experience, Projects, Leadership, and Education. It follows the user's preferred LaTeX format while retaining the same source-of-truth and escaping rules. `profile`, `portfolio`, and `leadership` are used by this template; they are optional for `standard`.
 
 ### Field reference
 

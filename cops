@@ -5,6 +5,7 @@
 #   ./cops doctor
 #   ./cops verify
 #   ./cops pdf cv.html output/cv.pdf
+#   ./cops cover-letter payload.json
 #   ./cops scan
 #   ./cops node generate-pdf.mjs cv.html output/cv.pdf
 #   ./cops shell                     # interactive bash
@@ -62,7 +63,7 @@ esac
 cmd="$1"; shift || true
 
 case "$cmd" in
-  doctor|verify|normalize|dedup|merge|pdf|sync-check|liveness|scan|gemini:eval|update|update:check|rollback)
+  doctor|verify|normalize|dedup|merge|pdf|cover-letter|sync-check|liveness|scan|gemini:eval|update|update:check|rollback)
     ensure_up
     exec docker compose exec -it "$SERVICE" npm run --silent "$cmd" -- "$@"
     ;;

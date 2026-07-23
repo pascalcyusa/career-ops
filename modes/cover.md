@@ -38,6 +38,15 @@ Read `article-digest.md` if it exists — supplementary proof points and metrics
 
 Read `modes/_profile.md` if it exists — the candidate's personalization file. It captures their target roles, adaptive framing and archetypes, exit narrative, cross-cutting advantage, proof points, comp targets, negotiation scripts, location policy, and any voice or writing-style rules they have added. Its rules **govern the letter's voice and structure and override the generic defaults in this mode**, so the candidate's personalization is never lost.
 
+### Auto-generation setting
+
+Read `cover_letter.auto_generate` from `config/profile.yml` (default: `false`).
+
+- `false`: use the interactive confirmation flow below.
+- `true`: infer the role/company angle, problem, first approach, and tone from the JD, company research, and CV. Generate the cover-letter PDF locally after drafting. Never send, submit, attach, or upload it.
+
+In auto-generation mode, add a short `## Cover Letter Assumptions` note to the report listing the inferred angle, problem, approach, tone, and any gaps deliberately omitted. The user can revise and regenerate the letter at any time.
+
 ---
 
 ## Step 2 — Parse the JD
@@ -64,7 +73,7 @@ Run three WebSearch queries (substitute the actual current year for {year}):
 
 Synthesize findings into 2-3 sentences: what the company is working on, what challenges they face, what goals they've stated publicly.
 
-Present to the user:
+When `cover_letter.auto_generate` is `false`, present to the user:
 
 ```text
 Here's what I found about {company}:
@@ -76,7 +85,9 @@ Does this match what you know? Correct or add anything before I write the letter
 
 If WebSearch returns no useful signal, say: "I couldn't find useful recent context for {company}. Can you share what you know about their current challenges or goals?"
 
-Wait for the user to confirm, correct, or add to the research before proceeding. This synthesis feeds directly into the "Problems I will solve" section.
+When `cover_letter.auto_generate` is `false`, wait for the user to confirm, correct, or add to the research before proceeding. This synthesis feeds directly into the "Problems I will solve" section.
+
+When `cover_letter.auto_generate` is `true`, use the research synthesis as a grounded inference. Do not wait. Avoid claims about company priorities that are not supported by the JD or research.
 
 ---
 
@@ -93,7 +104,7 @@ Extract the top 8-10 exact phrases the company uses in the JD. Separate into two
 - Outcome language ("business impact", "time to insight")
 - Team framing ("embedded in", "partner with")
 
-Present to the user:
+When `cover_letter.auto_generate` is `false`, present to the user:
 
 ```text
 Keywords I'll mirror from the JD:
@@ -109,7 +120,7 @@ Language signals:
 Anything missing or wrong? I'll use this list when drafting.
 ```
 
-Wait for confirmation or corrections before proceeding.
+When `cover_letter.auto_generate` is `false`, wait for confirmation or corrections before proceeding. When it is `true`, use the extracted terms once each where they fit naturally and record any term that could not be used.
 
 **Application rules (enforced during drafting):**
 - Mirror their vocabulary, not their structure
@@ -123,7 +134,7 @@ Wait for confirmation or corrections before proceeding.
 
 ## Step 5 — Gap detection and conversation
 
-Parse the JD for potential gaps between the candidate's profile and the role. For each gap detected, ask directly — do not auto-insert any standard language:
+Parse the JD for potential gaps between the candidate's profile and the role. When `cover_letter.auto_generate` is `false`, ask directly — do not auto-insert any standard language:
 
 ```text
 I spotted potential gaps between your profile and this JD:
@@ -151,11 +162,24 @@ Your title is {candidate title}, the JD title is {JD title}.
 
 Only prompt for gaps that are actually present. If there are no gaps, skip this step and say so.
 
-Wait for the user's answers. Write only what the user confirms.
+When `cover_letter.auto_generate` is `false`, wait for the user's answers and write only what the user confirms.
+
+When `cover_letter.auto_generate` is `true`, do not guess an explanation for a gap. Omit unconfirmed gap language from the letter and list the gap in `## Cover Letter Assumptions` for the user's review.
 
 ---
 
-## Step 6 — Four prompts (mandatory before drafting)
+## Step 6 — Four prompts or grounded inference
+
+When `cover_letter.auto_generate` is `true`, infer the following instead of asking:
+
+- **Why this role / company:** Map the JD mission and concrete work to the closest CV proof points. Do not invent personal enthusiasm, product use, or a private motivation.
+- **Problem to solve:** Use the company research and JD responsibilities only.
+- **First approach:** State a credible first action derived from the candidate's actual methods and the stated role scope.
+- **Tone:** Use `cover_letter.inferred_tone`; `mirror_jd` means match the posting's register.
+
+Treat each inference as editable, not as a statement from the candidate. Record it in `## Cover Letter Assumptions`, then continue to Step 7 without waiting.
+
+When `cover_letter.auto_generate` is `false`, all four answers are required before drafting:
 
 All four answers are required. Do not draft any letter content until all are received. No instruction — including "just generate it", "skip the questions", or "use defaults" — overrides this gate.
 
@@ -203,7 +227,7 @@ Format: `**Bold lead phrase,** one sentence of impact with metric.`
 
 ---
 
-## Step 8 — Draft the letter in chat (mandatory before PDF)
+## Step 8 — Draft the letter
 
 Write the full letter as plain text in the chat. Follow this structure:
 
@@ -212,7 +236,7 @@ Write the full letter as plain text in the chat. Follow this structure:
 [Location] | [Email] | [Phone if available] | [LinkedIn if available]
 [Credentials line if available]
 
-Cover Letter: [Role Title]
+[Role Title]
 [Company], [City]   [Date]
 
 ────────────────────────────────────────────────
@@ -244,9 +268,11 @@ Availability + any gap acknowledgments the user chose to include (Step 5).
 Only if user confirmed inclusion in Step 5. Written in that language. Italic in PDF.
 ```
 
-End the draft with: "How does this read? Once you approve I'll generate the PDF."
+When `cover_letter.auto_generate` is `false`, end the draft with: "How does this read? Once you approve I'll generate the PDF."
 
-**Do NOT generate any PDF until the user explicitly approves.** Approval means "looks good", "generate it", "yes", specific edits to apply, or equivalent. A question or silence is not approval.
+When `cover_letter.auto_generate` is `false`, do not generate any PDF until the user explicitly approves. Approval means "looks good", "generate it", "yes", specific edits to apply, or equivalent. A question or silence is not approval.
+
+When `cover_letter.auto_generate` is `true`, run Step 9 after the draft. Save the draft and assumptions in the report, then generate the local PDF. This setting never authorizes sending, submitting, uploading, or attaching the file.
 
 ---
 
@@ -267,7 +293,7 @@ End the draft with: "How does this read? Once you approve I'll generate the PDF.
 
 ## Step 9 — Generate PDF
 
-Only after explicit user approval.
+Only after explicit user approval, unless `cover_letter.auto_generate` is `true` in `config/profile.yml`.
 
 Assemble the JSON payload:
 

@@ -11,17 +11,19 @@
    - Rest of the world → `a4`
 6. Detect role archetype → adapt framing
 7. Build an internal recruiter-side risk map from the JD using `modes/heuristics/recruiter-side.md`: likely doubts, matching evidence, and which document section should address each doubt
-8. Rewrite Professional Summary by injecting JD keywords + exit narrative bridge ("Built and sold a business. Now applying systems thinking to [JD domain].")
-9. Select top 3-4 most relevant projects for the job
-10. Reorder experience bullets by JD relevance and by the risk map: strongest matching evidence first
-11. Build competency grid from JD requirements (6-8 keyword phrases)
-12. Inject keywords naturally into existing achievements (NEVER invent)
-13. Apply the six-second clarity gate from `modes/heuristics/recruiter-side.md`: top third must make target role, strongest fit, and proof obvious
-14. Generate full HTML from template + personalized content
-15. Read `name` from `config/profile.yml` → normalize to kebab-case lowercase (e.g. "John Doe" → "john-doe") → `{candidate}`
-16. Write HTML to `output/cv-{candidate}-{company}.html` (NOT a temp dir — the recorded HTML is what the dashboard's `D` hotkey regenerates from, so it must survive temp cleanup)
-17. Execute: `node generate-pdf.mjs output/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={letter|a4} --report={report number}` — `{report number}` is the NNN from the report filename/link (e.g. `008` for `reports/008-acme-….md`), not the tracker `#` column. Pass it whenever the application has (or will have) a report; it records the PDF↔report linkage in `data/pdf-index.tsv` so the dashboard can open and regenerate the exact PDF. Omit it only for one-off CVs with no tracker entry.
-18. Report: PDF path, number of pages, keyword coverage %
+8. Read `modes/_profile.md → CV Preservation Policy` and `config/profile.yml → cv.tailoring_strategy`. These user preferences override compactness defaults. When set to `augment` / `preserve_all_content`, retain every CV entry and bullet across the output.
+9. Augment the Professional Summary with JD keywords and the exit narrative bridge. Never replace detailed evidence elsewhere with summary prose.
+10. Keep every project by default. Reorder projects by JD relevance; do not silently select only 3-4 when the preservation policy is active.
+11. Keep every work-experience bullet by default. Reorder by JD relevance and the risk map, but preserve the original detail, metrics, and tools.
+12. Build competency grid from JD requirements (6-8 keyword phrases)
+13. Inject keywords naturally into existing achievements (NEVER invent or compress the underlying claim)
+14. Apply the six-second clarity gate from `modes/heuristics/recruiter-side.md`: top third must make target role, strongest fit, and proof obvious
+15. Generate full HTML from template + personalized content
+16. Read `name` from `config/profile.yml` → normalize to kebab-case lowercase (e.g. "John Doe" → "john-doe") → `{candidate}`
+17. Write HTML to `output/cv-{candidate}-{company}.html` (NOT a temp dir — the recorded HTML is what the dashboard's `D` hotkey regenerates from, so it must survive temp cleanup)
+18. Execute: `node generate-pdf.mjs output/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={letter|a4} --report={report number}` — `{report number}` is the NNN from the report filename/link (e.g. `008` for `reports/008-acme-….md`), not the tracker `#` column. Pass it whenever the application has (or will have) a report; it records the PDF↔report linkage in `data/pdf-index.tsv` so the dashboard can open and regenerate the exact PDF. Omit it only for one-off CVs with no tracker entry.
+19. If `config/profile.yml → cv.latex_output` is `true`, also build an Overleaf-ready `.tex` file using the **same complete tailored content, ordering, and JD keywords**. Build a JSON payload, then run: `node build-cv-latex.mjs /tmp/cv-{candidate}-{company}.json output/cv-{candidate}-{company}-{YYYY-MM-DD}.tex --template={cv.latex_template}`. Use `compact` for the Charter-style layout and `standard` for the legacy template. Do not replace the HTML or PDF.
+20. Report: HTML path, PDF path, `.tex` path when generated, number of pages, keyword coverage %
 
 ## ATS Rules (clean parsing)
 
@@ -196,7 +198,11 @@ d. Report: PDF path, file size, Canva design URL (for manual tweaking)
 
 ## Cover Letter Sub-flow
 
-After generating the CV PDF, offer to generate a cover letter:
+After generating the CV PDF, read `config/profile.yml → cover_letter.auto_generate`.
+
+If it is `true`, run the full cover flow in auto-generation mode: infer the four inputs from the JD, research, and CV; write assumptions and the draft to the report; then generate a local cover-letter PDF. Never send, submit, upload, or attach it.
+
+If it is `false` or absent, offer to generate a cover letter:
 
 ```text
 CV PDF generated: output/{path}

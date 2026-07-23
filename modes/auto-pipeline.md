@@ -46,6 +46,15 @@ Read `config/profile.yml`. Check `cv.output_format`:
 - If `"latex"`, execute the full pipeline from `modes/latex.md`
 - Otherwise (default), execute the full pipeline from `modes/pdf.md`
 
+### Step 3.5 — Generate cover letter when enabled
+
+Read `config/profile.yml → cover_letter.auto_generate`.
+
+- If `true`, run `modes/cover.md` in auto-generation mode after the CV outputs are written. Infer the letter inputs from the JD, research, and CV; save the assumptions and the draft in the report; then generate a local cover-letter PDF.
+- If `false` or absent, retain the existing report draft only and wait for an explicit `/career-ops cover {slug}` request.
+
+This step never sends, submits, uploads, or attaches a file.
+
 ## Step 4 — Draft Application Answers (only if score >= 4.5)
 
 If the final score is >= 4.5, generate a draft of responses for the application form:

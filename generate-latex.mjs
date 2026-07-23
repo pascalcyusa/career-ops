@@ -57,7 +57,9 @@ async function main() {
   const issues = [];
 
   // Check section count (language-agnostic — see MIN_SECTIONS).
-  const sectionCount = (content.match(/\\section\{/g) || []).length;
+  // Compact templates commonly use unnumbered \section*{} headings. Both
+  // forms are real sections for CV validation and ATS structure checks.
+  const sectionCount = (content.match(/\\section\*?\{/g) || []).length;
   if (sectionCount < MIN_SECTIONS) {
     issues.push(`Expected at least ${MIN_SECTIONS} \\section{} blocks (Education, Work Experience, Projects, Skills — or localized equivalents), found ${sectionCount}`);
   }
