@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — Shyaka Jean Pascal Cyusa</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.4;
+    color: #1a1a1a;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  .name {
+    font-weight: 700;
+    font-size: 14pt;
+    margin-bottom: 3pt;
+  }
+
+  .contact, .credentials {
+    font-size: 9pt;
+    color: #666666;
+    line-height: 1.3;
+    margin-bottom: 2pt;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #1a56a0;
+    text-decoration: none;
+  }
+
+  .divider {
+    border: none;
+    border-top: 0.5pt solid #cccccc;
+    margin: 6pt 0 8pt;
+  }
+
+  .role-title {
+    font-weight: 700;
+    font-size: 11pt;
+    margin-top: 10pt;
+    margin-bottom: 2pt;
+  }
+
+  .dateline {
+    font-size: 9pt;
+    color: #666666;
+    margin-bottom: 12pt;
+  }
+
+  .greeting {
+    margin-bottom: 8pt;
+  }
+
+  p {
+    margin-bottom: 8pt;
+  }
+
+  .achievements {
+    list-style: none;
+    margin-bottom: 4pt;
+  }
+
+  .achievements li {
+    margin-bottom: 5pt;
+    padding-left: 14pt;
+    position: relative;
+  }
+
+  .achievements li::before {
+    content: "\2022";
+    position: absolute;
+    left: 0;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 4pt;
+    margin-bottom: 8pt;
+  }
+
+  .footnotes {
+    margin-top: 10pt;
+    padding-top: 4pt;
+    border-top: 0.5pt solid #cccccc;
+  }
+
+  .footnotes p {
+    font-size: 8pt;
+    color: #888888;
+    line-height: 1.3;
+    margin-bottom: 3pt;
+  }
+</style>
+</head>
+<body>
+  <div class="name">Shyaka Jean Pascal Cyusa</div>
+  <div class="contact">Boston, MA &nbsp;|&nbsp; <a href="mailto:cyusashyakapascal@gmail.com">cyusashyakapascal@gmail.com</a> &nbsp;|&nbsp; +1-781-539-9412 &nbsp;|&nbsp; <a href="https://linkedin.com/in/pascal-cyusa">LinkedIn</a> &nbsp;|&nbsp; <a href="https://github.com/pascalcyusa">github.com/pascalcyusa</a></div>
+  <div class="credentials">BS Mechanical Engineering, Tufts University</div>
+  <hr class="divider">
+
+  <div class="role-title">Cover Letter: Mechatronics Engineer</div>
+  <div class="dateline">Google &nbsp;&nbsp; Kirkland, WA &nbsp;&nbsp; 2026-07-28</div>
+
+  
+  <p>Google Cloud is expanding the infrastructure and tools that help organizations deploy AI at scale. I am applying for the Mechatronics Engineer role because its focus on component design, prototype testing, and hardware-software integration aligns with my mechanical engineering research and robotics projects at Tufts University.</p>
+  <p>I recently completed a BS in Mechanical Engineering and bring hands-on experience turning physical measurements into dependable test results. In Tufts&#39; Microscale Sensors and Systems Lab, I combined wind-tunnel experimentation with LabVIEW, C, MATLAB, and Python to automate data collection, characterize sensor performance, and trace calibration changes. My project work adds mechanical product design, embedded control, computer vision, and system integration.</p>
+
+  <ul class="achievements">
+    <li><b>Quantified sensor performance,</b> Tested a TDK CH101 ultrasonic sensor for a miniature anemometer, reaching ±0.19 mm distance error and ±0.65 m/s wind-velocity error.</li>
+    <li><b>Built a real-time test pipeline,</b> Developed C and LabVIEW data acquisition that exposed calibration changes and improved measurement reliability during sensor testing.</li>
+    <li><b>Applied statistical error analysis,</b> Analyzed time-of-flight and airflow data in MATLAB and Python to achieve ±0.05 m/s accuracy, then presented the findings at a research symposium.</li>
+    <li><b>Designed for manufacture and use,</b> Led mechanical design of a wheelchair-integrated treat dispenser with DFM, SolidWorks models, GD&amp;T drawings, 3D printing, and laser-cut prototypes.</li>
+    <li><b>Integrated a physical system,</b> Built an autonomous ROS 2 pancake-delivery robot that combined IR sensors, OpenCV station detection, Airtable orders, and a state machine.</li>
+  </ul>
+
+  <p>Google Cloud&#39;s recent announcements put AI infrastructure and agentic systems at the center of its growth. In this role, I would contribute by making component behavior measurable across operating conditions and by using test data to isolate failures at hardware-software boundaries. I would begin by understanding the subsystem interfaces, validation criteria, and existing test plans, then build a focused measurement loop that makes deviations visible early.</p>
+  <p>I can relocate to Kirkland and am available after a 30-day notice period. I would value the chance to discuss how my sensor testing, prototype work, and integrated robotics projects can support the team.</p>
+  
+  
+</body>
+</html>

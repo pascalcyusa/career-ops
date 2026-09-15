@@ -104,16 +104,34 @@ function buildSkills(categories) {
 }
 
 function buildSkillColumns(categories) {
-  const widths = ['0.22\\textwidth', '0.22\\textwidth', '0.26\\textwidth', '0.30\\textwidth'];
-  const safeCategories = Array.isArray(categories) ? categories.slice(0, 4) : [];
-  return widths.map((width, index) => {
-    const category = safeCategories[index];
-    const items = Array.isArray(category?.items)
+  const columnCount = 4;
+  const maxItemsPerColumn = 6;
+  const items = (Array.isArray(categories) ? categories : []).flatMap(category => {
+    const rawItems = Array.isArray(category?.items)
       ? category.items
-      : String(category?.items || '').split(',').map(item => item.trim()).filter(Boolean);
-    const bullets = items.map(item => `\\item ${escapeLatex(item)}`).join('\n');
-    return `\\begin{minipage}[t]{${width}}\n\\begin{itemize}[left=0pt]\n${bullets}\n\\end{itemize}\n\\end{minipage}%`;
-  }).join('\n');
+      : String(category?.items || '').split(',');
+    return rawItems.map(item => String(item).trim()).filter(Boolean);
+  });
+
+  if (items.length === 0) return '';
+
+  // Keep every skill while preserving a four-column grid. Each grid row can
+  // hold up to 24 skills, with no column carrying more than six.
+  const rows = [];
+  for (let offset = 0; offset < items.length; offset += columnCount * maxItemsPerColumn) {
+    const rowItems = items.slice(offset, offset + columnCount * maxItemsPerColumn);
+    const itemsPerColumn = Math.min(maxItemsPerColumn, Math.ceil(rowItems.length / columnCount));
+
+    const columns = Array.from({ length: columnCount }, (_, index) => {
+      const columnItems = rowItems.slice(index * itemsPerColumn, (index + 1) * itemsPerColumn);
+      const bullets = columnItems.map(item => `\\item ${escapeLatex(item)}`).join('\n');
+      return `\\begin{minipage}[t]{0.25\\textwidth}\n\\begin{itemize}[left=0pt]\n${bullets}\n\\end{itemize}\n\\end{minipage}%`;
+    });
+
+    rows.push(columns.join('\n'));
+  }
+
+  return rows.join('\\vspace{-2pt}\n');
 }
 
 function buildLeadership(entries) {
